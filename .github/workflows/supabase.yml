@@ -22,5 +22,5 @@ jobs:
       - run: pnpm supabase:reset
       - run: pnpm supabase:lint
       - run: pnpm supabase:test
-      - run: pnpm supabase:types
-      - run: git diff --exit-code packages/types/src/generated/database.types.ts
+      - run: pnpm exec supabase gen types typescript --local --schema public,app_private > /tmp/database.local.types.ts
+      - run: pnpm supabase:types:verify packages/types/src/generated/database.types.ts /tmp/database.local.types.ts

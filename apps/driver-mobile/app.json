@@ -2,6 +2,7 @@
   "expo": {
     "name": "SuperNova Driver",
     "slug": "supernova-driver",
+    "owner": "omar-gouda",
     "scheme": "supernova-driver",
     "orientation": "portrait",
     "icon": "./assets/brand/supernova-app-icon.png",
@@ -16,8 +17,19 @@
         }
       ]
     ],
-    "ios": { "bundleIdentifier": "com.example.supernova.driver" },
-    "android": { "package": "com.example.supernova.driver" },
-    "extra": { "router": { "origin": false } }
+    "ios": {
+      "bundleIdentifier": "com.supernovamobility.driver"
+    },
+    "android": {
+      "package": "com.supernovamobility.driver"
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "4e13e0a2-60ff-4843-9f29-16b23207a26a"
+      }
+    }
   }
 }

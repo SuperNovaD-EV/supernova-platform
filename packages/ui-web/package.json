@@ -13,12 +13,15 @@
     "test": "vitest run --passWithNoTests"
   },
   "peerDependencies": {
-    "react": ">=19",
-    "react-dom": ">=19"
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
   },
   "dependencies": {
     "@supernova/design-tokens": "workspace:*",
     "@supernova/localization": "workspace:*"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  }
 }

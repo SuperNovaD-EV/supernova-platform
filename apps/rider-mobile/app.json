@@ -2,6 +2,7 @@
   "expo": {
     "name": "SuperNova Rider",
     "slug": "supernova-rider",
+    "owner": "omar-gouda",
     "scheme": "supernova-rider",
     "orientation": "portrait",
     "icon": "./assets/brand/supernova-app-icon.png",
@@ -16,8 +17,19 @@
         }
       ]
     ],
-    "ios": { "bundleIdentifier": "com.example.supernova.rider" },
-    "android": { "package": "com.example.supernova.rider" },
-    "extra": { "router": { "origin": false } }
+    "ios": {
+      "bundleIdentifier": "com.supernovamobility.rider"
+    },
+    "android": {
+      "package": "com.supernovamobility.rider"
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "bb4cf74b-cb81-4200-9415-7821f5dea5be"
+      }
+    }
   }
 }

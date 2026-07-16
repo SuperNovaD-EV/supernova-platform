@@ -60,3 +60,5 @@ Create separate projects for `rider-mobile`, `driver-mobile`, `admin-web`, and `
 ## Google Cloud And Maps
 
 Google Cloud provisioning is blocked until a development project owner and billing budget are approved. Required APIs are Maps SDK for Android, Maps SDK for iOS, Places API New, Routes API, and Geocoding API. Create separate restricted credentials for Rider Android, Rider iOS, Driver Android, Driver iOS, server-side requests, and web development only if required.
+
+Phase 0.5 development credentials must not be consumed by applications until application restrictions are complete. Rider Android and Driver Android keys require their real SHA-1 fingerprints, and server-side credentials require real runtime IP restrictions. The maps implementation phase has a hard preflight gate for these restrictions before any map feature or provider SDK consumption begins.
