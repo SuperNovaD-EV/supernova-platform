@@ -4,6 +4,8 @@ Private Phase 0 foundation for SuperNova, a premium safety-first mobility platfo
 
 Brand source assets live in `packages/design-tokens/assets/brand/`; usage rules live in `docs/branding/logo-usage.md`.
 
+Remote provisioning instructions live in `docs/operations/remote-provisioning.md`; local setup instructions live in `docs/operations/development-setup.md`.
+
 ## Commands
 
 - `pnpm validate` runs the local quality gate.
