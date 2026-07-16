@@ -13,10 +13,13 @@
     "test": "vitest run --passWithNoTests"
   },
   "peerDependencies": {
-    "react": ">=19"
+    "react": "19.2.3"
   },
   "dependencies": {
     "@supernova/design-tokens": "workspace:*",
     "echarts": "6.1.0"
+  },
+  "devDependencies": {
+    "react": "19.2.3"
   }
 }

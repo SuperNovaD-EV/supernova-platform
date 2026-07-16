@@ -23,6 +23,7 @@
     "supabase:lint": "supabase db lint",
     "supabase:test": "supabase test db",
     "supabase:types": "supabase gen types typescript --local --schema public,app_private > packages/types/src/generated/database.types.ts",
+    "supabase:types:verify": "node scripts/verify-supabase-type-drift.mjs",
     "prepare": "husky"
   },
   "lint-staged": {
