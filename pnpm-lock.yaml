@@ -89,6 +89,9 @@ importers:
       "@supernova/localization":
         specifier: workspace:*
         version: link:../../packages/localization
+      "@supernova/testing":
+        specifier: workspace:*
+        version: link:../../packages/testing
       "@supernova/ui-web":
         specifier: workspace:*
         version: link:../../packages/ui-web
@@ -149,6 +152,9 @@ importers:
       "@supernova/localization":
         specifier: workspace:*
         version: link:../../packages/localization
+      "@supernova/testing":
+        specifier: workspace:*
+        version: link:../../packages/testing
       "@supernova/ui-mobile":
         specifier: workspace:*
         version: link:../../packages/ui-mobile
@@ -249,6 +255,9 @@ importers:
       "@supernova/localization":
         specifier: workspace:*
         version: link:../../packages/localization
+      "@supernova/testing":
+        specifier: workspace:*
+        version: link:../../packages/testing
       "@supernova/ui-web":
         specifier: workspace:*
         version: link:../../packages/ui-web
@@ -306,6 +315,9 @@ importers:
       "@supernova/localization":
         specifier: workspace:*
         version: link:../../packages/localization
+      "@supernova/testing":
+        specifier: workspace:*
+        version: link:../../packages/testing
       "@supernova/ui-mobile":
         specifier: workspace:*
         version: link:../../packages/ui-mobile
