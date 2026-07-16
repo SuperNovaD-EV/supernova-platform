@@ -14,6 +14,7 @@
   "dependencies": {
     "@hookform/resolvers": "5.4.0",
     "@sentry/nextjs": "10.65.0",
+    "@supernova/brand": "workspace:*",
     "@supernova/charts-web": "workspace:*",
     "@supernova/design-tokens": "workspace:*",
     "@supernova/localization": "workspace:*",

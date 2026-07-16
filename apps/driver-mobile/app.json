@@ -4,7 +4,18 @@
     "slug": "supernova-driver",
     "scheme": "supernova-driver",
     "orientation": "portrait",
-    "plugins": ["expo-router"],
+    "icon": "./assets/brand/supernova-app-icon.png",
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/brand/supernova-splash.png",
+          "backgroundColor": "#0D1117",
+          "resizeMode": "contain"
+        }
+      ]
+    ],
     "ios": { "bundleIdentifier": "com.example.supernova.driver" },
     "android": { "package": "com.example.supernova.driver" },
     "extra": { "router": { "origin": false } }

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 220" role="img" aria-labelledby="title desc">
+  <title id="title">SuperNova stacked lockup</title>
+  <desc id="desc">SuperNova symbol above the custom path wordmark.</desc>
+  <g transform="translate(196 0)">
+    <path fill="#635BFF" d="M73 12C42 15 20 39 17 69c9-12 24-21 42-24 7-12 17-23 14-33Z" />
+    <path fill="#25C6DA" d="M111 58c-6 31-31 52-62 54 13-8 22-21 27-39 12-5 25-10 35-15Z" />
+    <path fill="#0D1117" d="M37 76c13 19 46 17 56-8C79 79 54 77 46 58c-5 5-8 11-9 18Z" opacity=".92" />
+    <path fill="#F7F8FA" d="M64 37c4 17 10 23 27 27-17 4-23 10-27 27-4-17-10-23-27-27 17-4 23-10 27-27Z" />
+  </g>
+  <path fill="#0D1117" d="M8 156h42v8H18v10h27c8 0 13 5 13 13v1c0 8-5 13-13 13H8v-8h39v-11H20c-8 0-12-5-12-13v-1c0-8 4-12 12-12Zm62 0h10v32c0 4 3 6 7 6h20c4 0 7-2 7-6v-32h10v33c0 8-6 12-15 12H85c-9 0-15-4-15-12v-33Zm70 0h45c9 0 14 5 14 14v5c0 9-5 14-14 14h-35v12h-10v-45Zm10 8v17h34c3 0 5-2 5-5v-7c0-3-2-5-5-5h-34Zm64-8h51v8h-41v10h36v8h-36v11h42v8h-52v-45Zm68 0h45c9 0 14 5 14 14v3c0 7-3 11-9 13l11 15h-12l-10-14h-29v14h-10v-45Zm10 8v15h34c3 0 5-2 5-5v-5c0-3-2-5-5-5h-34Zm66-8h12l38 33v-33h10v45h-11l-39-34v34h-10v-45Zm80 13c0-8 6-13 15-13h31c9 0 15 5 15 13v19c0 8-6 13-15 13h-31c-9 0-15-5-15-13v-19Zm10 1v17c0 4 3 6 7 6h27c4 0 7-2 7-6v-17c0-4-3-6-7-6h-27c-4 0-7 2-7 6Z" />
+</svg>

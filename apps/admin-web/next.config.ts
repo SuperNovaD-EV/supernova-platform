@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     "@supernova/ui-web",
     "@supernova/charts-web",
     "@supernova/design-tokens",
+    "@supernova/brand",
     "@supernova/localization",
   ],
 };

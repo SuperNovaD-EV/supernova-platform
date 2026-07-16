@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">SuperNova app icon</title>
+  <desc id="desc">SuperNova app icon with a centered nova navigation symbol inside a calm premium field.</desc>
+  <rect width="1024" height="1024" rx="224" fill="#0D1117" />
+  <path fill="#635BFF" d="M584 128c-248 24-424 216-448 456 72-96 192-168 336-192 56-96 136-184 112-264Z" />
+  <path fill="#25C6DA" d="M888 464c-48 248-248 416-496 432 104-64 176-168 216-312 96-40 200-80 280-120Z" />
+  <path fill="#151B23" d="M296 608c104 152 368 136 448-64-112 88-312 72-376-80-40 40-64 88-72 144Z" />
+  <path fill="#F7F8FA" d="M512 296c32 136 80 184 216 216-136 32-184 80-216 216-32-136-80-184-216-216 136-32 184-80 216-216Z" />
+</svg>

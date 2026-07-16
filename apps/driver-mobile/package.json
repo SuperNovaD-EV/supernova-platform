@@ -29,6 +29,7 @@
     "expo-localization": "57.0.1",
     "expo-router": "57.0.6",
     "expo-secure-store": "57.0.1",
+    "expo-splash-screen": "57.0.4",
     "lucide-react-native": "1.24.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",

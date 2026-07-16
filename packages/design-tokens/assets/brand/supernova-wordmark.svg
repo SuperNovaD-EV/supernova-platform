@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 64" role="img" aria-labelledby="title desc">
+  <title id="title">SuperNova wordmark</title>
+  <desc id="desc">Custom path wordmark spelling SuperNova.</desc>
+  <path fill="#0D1117" d="M8 12h42v8H18v10h27c8 0 13 5 13 13v1c0 8-5 13-13 13H8v-8h39V38H20c-8 0-12-5-12-13v-1c0-8 4-12 12-12Zm62 0h10v32c0 4 3 6 7 6h20c4 0 7-2 7-6V12h10v33c0 8-6 12-15 12H85c-9 0-15-4-15-12V12Zm70 0h45c9 0 14 5 14 14v5c0 9-5 14-14 14h-35v12h-10V12Zm10 8v17h34c3 0 5-2 5-5v-7c0-3-2-5-5-5h-34Zm64-8h51v8h-41v10h36v8h-36v11h42v8h-52V12Zm68 0h45c9 0 14 5 14 14v3c0 7-3 11-9 13l11 15h-12l-10-14h-29v14h-10V12Zm10 8v15h34c3 0 5-2 5-5v-5c0-3-2-5-5-5h-34Zm66-8h12l38 33V12h10v45h-11l-39-34v34h-10V12Zm80 13c0-8 6-13 15-13h31c9 0 15 5 15 13v19c0 8-6 13-15 13h-31c-9 0-15-5-15-13V25Zm10 1v17c0 4 3 6 7 6h27c4 0 7-2 7-6V26c0-4-3-6-7-6h-27c-4 0-7 2-7 6Z" />
+  <path fill="#0D1117" d="M6 12h42v8H16v10h27c8 0 13 5 13 13v1c0 8-5 13-13 13H6v-8h39V38H18c-8 0-12-5-12-13v-1c0-8 4-12 12-12Z" transform="translate(494)" />
+</svg>

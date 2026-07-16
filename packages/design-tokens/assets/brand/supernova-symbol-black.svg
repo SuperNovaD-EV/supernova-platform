@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">SuperNova black symbol</title>
+  <desc id="desc">Black SuperNova nova navigation symbol for light backgrounds.</desc>
+  <path fill="#000" d="M73 12C42 15 20 39 17 69c9-12 24-21 42-24 7-12 17-23 14-33Z" />
+  <path fill="#000" d="M111 58c-6 31-31 52-62 54 13-8 22-21 27-39 12-5 25-10 35-15Z" />
+  <path fill="#fff" d="M37 76c13 19 46 17 56-8C79 79 54 77 46 58c-5 5-8 11-9 18Z" />
+  <path fill="#fff" d="M64 37c4 17 10 23 27 27-17 4-23 10-27 27-4-17-10-23-27-27 17-4 23-10 27-27Z" />
+</svg>

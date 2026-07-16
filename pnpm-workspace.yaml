@@ -62,3 +62,4 @@ minimumReleaseAgeExclude:
   - expo-secure-store@57.0.1
   - expo-symbols@57.0.1
   - jest-expo@57.0.2
+  - expo-splash-screen@57.0.4
