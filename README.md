@@ -6,10 +6,12 @@ Brand source assets live in `packages/design-tokens/assets/brand/`; usage rules 
 
 Remote provisioning instructions live in `docs/operations/remote-provisioning.md`; local setup instructions live in `docs/operations/development-setup.md`.
 
+Phase 1 product and domain architecture starts with `docs/product/product-requirements.md`, `docs/product/mvp-scope.md`, `docs/architecture/domain-boundaries.md`, `docs/architecture/domain-model.md`, and `docs/architecture/state-machines.md`.
+
 ## Commands
 
 - `pnpm validate` runs the local quality gate.
 - `pnpm dev:rider`, `pnpm dev:driver`, `pnpm dev:admin`, `pnpm dev:marketing` start shells.
 - `pnpm supabase:start`, `pnpm supabase:reset`, `pnpm supabase:lint`, `pnpm supabase:test`, `pnpm supabase:types` manage local Supabase.
 
-Phase 0 intentionally contains no auth, maps, trips, payments, dashboards, or business entities.
+Phase 1 remains documentation-only: no auth, maps, trips, payments, dashboards, domain migrations, or product features are implemented.
