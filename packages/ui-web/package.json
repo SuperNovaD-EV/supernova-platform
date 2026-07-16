@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "@supernova/design-tokens": "workspace:*",
-    "@supernova/localization": "workspace:*"
+    "@supernova/localization": "workspace:*",
+    "ogl": "^1.0.11"
   },
   "devDependencies": {
     "react": "19.2.3",

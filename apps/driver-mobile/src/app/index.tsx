@@ -7,6 +7,7 @@ import {
   Inline,
   MapCanvas,
   MoneyText,
+  NovaAtmosphere,
   PickupMarker,
   DestinationMarker,
   DriverMarker,
@@ -262,6 +263,9 @@ export default function Page() {
           </Inline>
         </Inline>
         <Surface {...context} elevated>
+          {["splash", "approved", "online"].includes(screen.id) ? (
+            <NovaAtmosphere {...context} compact={screen.id !== "approved"} />
+          ) : null}
           <Text {...context} role="title">
             {locale === "ar" ? "نموذج السائق" : screen.title}
           </Text>
@@ -328,13 +332,22 @@ function DriverBody(props: { context: PrototypeContext; id: string }) {
     ].includes(id)
   ) {
     return (
-      <Surface {...context}>
+      <Surface {...context} elevated>
         <Text {...context} role="section">
-          {demoRide.pickup}
+          {id === "incoming" ? "Premium request ready" : demoRide.pickup}
         </Text>
         <Text {...context} muted>
-          {demoRide.destination}
+          Pickup 1.8 km · ETA 4 min · {demoRide.destination}
         </Text>
+        <Inline style={{ flexWrap: "wrap" }}>
+          <StatusPill
+            {...context}
+            label="Payment confirmed"
+            variant="success"
+          />
+          <StatusPill {...context} label="Rider trusted" variant="info" />
+          <StatusPill {...context} label="Countdown 18s" variant="warning" />
+        </Inline>
         <FareSummary
           {...context}
           fareMinor={demoRide.estimateMinor}
@@ -346,7 +359,7 @@ function DriverBody(props: { context: PrototypeContext; id: string }) {
   }
   if (["summary", "earnings", "ledger", "payout-request"].includes(id)) {
     return (
-      <Surface {...context}>
+      <Surface {...context} elevated>
         <Text {...context} role="section">
           Net demo earnings
         </Text>
@@ -359,11 +372,18 @@ function DriverBody(props: { context: PrototypeContext; id: string }) {
     );
   }
   return (
-    <Surface {...context}>
+    <Surface {...context} elevated>
       <Text {...context}>{demoDriver.name}</Text>
       <Text {...context} muted>
         {demoDriver.verification} · GPS fresh · network ready
       </Text>
+      {id === "offline" || id === "online" ? (
+        <Inline style={{ flexWrap: "wrap" }}>
+          <StatusPill {...context} label="Zone: Dokki" variant="info" />
+          <StatusPill {...context} label="Demand: balanced" variant="success" />
+          <StatusPill {...context} label="Documents valid" variant="success" />
+        </Inline>
+      ) : null}
       <StatusPill
         {...context}
         label={id === "offline" ? "Offline" : "Demo ready"}

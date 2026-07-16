@@ -4,7 +4,7 @@ test("marketing shell renders with rtl structure", async ({ page }) => {
   await page.goto("/");
   await expect(
     page.getByRole("heading", {
-      name: "Premium safety-first mobility for Cairo and Giza",
+      name: /Safety-first mobility for Cairo and Giza/,
     }),
   ).toBeVisible();
 });
@@ -14,7 +14,9 @@ test("marketing prototype routes render responsively", async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/safety");
     await expect(
-      page.getByRole("heading", { name: /Safety designed/ }),
+      page.getByRole("heading", {
+        name: /Safety is designed into the state model/,
+      }),
     ).toBeVisible();
   }
 });

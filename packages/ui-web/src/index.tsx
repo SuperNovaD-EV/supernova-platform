@@ -12,6 +12,9 @@ import {
   type ThemeMode,
 } from "@supernova/design-tokens";
 import { getDirection, type Locale } from "@supernova/localization";
+import { Lightfall, LightfallFallback } from "./effects/lightfall";
+
+export { Lightfall, LightfallFallback };
 
 export type WebContext = {
   locale: Locale;
@@ -25,9 +28,14 @@ const toneColor = (context: WebContext, tone: StatusTone) => {
   if (tone === "success") return theme.color.status.success;
   if (tone === "warning") return theme.color.status.warning;
   if (tone === "danger") return theme.color.status.danger;
-  if (tone === "info") return theme.color.status.info;
+  if (tone === "info") return theme.color.brand.accent;
   return theme.color.text.secondary;
 };
+
+const shellBackground = (theme: ThemeMode) =>
+  theme === "dark"
+    ? "radial-gradient(circle at 18% 0%, rgba(99, 91, 255, 0.22), transparent 34%), radial-gradient(circle at 88% 18%, rgba(37, 198, 218, 0.14), transparent 30%), linear-gradient(180deg, #0D1117 0%, #111722 42%, #0D1117 100%)"
+    : "radial-gradient(circle at 18% 0%, rgba(99, 91, 255, 0.12), transparent 34%), radial-gradient(circle at 82% 14%, rgba(37, 198, 218, 0.1), transparent 32%), linear-gradient(180deg, #F7F8FA 0%, #EEF2F8 100%)";
 
 export function ThemeProviderShell(
   props: WebContext & { children: ReactNode; className?: string },
@@ -37,20 +45,19 @@ export function ThemeProviderShell(
     [props.theme],
   );
   const dir = getDirection(props.locale);
-  const theme = getTheme(props.theme);
   return (
     <div
       className={props.className}
       dir={dir}
       style={{
         ...variables,
-        background: theme.color.background.canvas,
-        color: theme.color.text.primary,
+        background: shellBackground(props.theme),
+        color: getTheme(props.theme).color.text.primary,
         direction: dir,
         fontFamily:
           props.locale === "ar"
             ? typography.family.arabic
-            : typography.family.latin,
+            : "'Inter', 'Plus Jakarta Sans', system-ui, sans-serif",
         minHeight: "100vh",
       }}
     >
@@ -59,7 +66,7 @@ export function ThemeProviderShell(
   );
 }
 
-export function BrandLockup(props: { inverse?: boolean }) {
+export function BrandLockup(props: { inverse?: boolean; compact?: boolean }) {
   return (
     <div aria-label="SuperNova" style={styles.lockup}>
       <span style={styles.symbol} aria-hidden="true">
@@ -68,7 +75,7 @@ export function BrandLockup(props: { inverse?: boolean }) {
       <strong
         style={{
           color: props.inverse ? "#FFFFFF" : "inherit",
-          fontSize: 18,
+          fontSize: props.compact ? 16 : 19,
           letterSpacing: 0,
           lineHeight: 1,
         }}
@@ -87,24 +94,39 @@ export function Surface(
     elevated?: boolean;
     style?: CSSProperties;
     as?: "section" | "article" | "div";
+    tone?: "metric" | "finance" | "safety" | "marketing" | "panel";
   },
 ) {
-  const theme = getTheme(props.theme);
   const Component = props.as ?? "section";
+  const dark = props.theme === "dark";
+  const toneGlow =
+    props.tone === "safety"
+      ? "rgba(255, 122, 128, 0.12)"
+      : props.tone === "finance"
+        ? "rgba(59, 212, 137, 0.12)"
+        : props.tone === "marketing"
+          ? "rgba(99, 91, 255, 0.16)"
+          : "rgba(37, 198, 218, 0.08)";
   return (
     <Component
       style={{
-        background: props.elevated
-          ? theme.color.background.elevated
-          : theme.color.background.surface,
-        border: `1px solid ${theme.color.border.default}`,
-        borderRadius: radii.md,
-        boxShadow: props.elevated ? shadows.soft : shadows.none,
+        background: dark
+          ? `linear-gradient(145deg, rgba(21, 27, 35, 0.92), rgba(13, 17, 23, 0.84)), radial-gradient(circle at 16% 0%, ${toneGlow}, transparent 42%)`
+          : `linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(247, 248, 250, 0.82)), radial-gradient(circle at 12% 0%, ${toneGlow}, transparent 46%)`,
+        border: `1px solid ${dark ? "rgba(210, 216, 226, 0.12)" : "rgba(13, 17, 23, 0.08)"}`,
+        borderRadius: 18,
+        boxShadow: props.elevated
+          ? dark
+            ? "0 24px 80px rgba(0, 0, 0, 0.36)"
+            : shadows.soft
+          : "none",
+        overflow: "hidden",
         padding: spacing.xl,
+        position: "relative",
         ...props.style,
       }}
     >
-      {props.children}
+      {Children.toArray(props.children)}
     </Component>
   );
 }
@@ -119,21 +141,32 @@ export function Button(
     tone?: StatusTone;
     href?: string;
     onClick?: () => void;
+    variant?: "primary" | "secondary" | "ghost";
   },
 ) {
   const color = toneColor(props, props.tone ?? "info");
+  const ghost = props.variant === "ghost";
+  const secondary = props.variant === "secondary";
   const content = (
     <span
       style={{
         alignItems: "center",
-        background: color,
-        border: 0,
-        borderRadius: radii.md,
-        color: "#FFFFFF",
+        background: ghost
+          ? "transparent"
+          : secondary
+            ? "rgba(247, 248, 250, 0.08)"
+            : `linear-gradient(135deg, ${color}, #7A5CFF)`,
+        border: `1px solid ${secondary || ghost ? "rgba(247, 248, 250, 0.18)" : "rgba(255, 255, 255, 0.18)"}`,
+        borderRadius: 999,
+        boxShadow: ghost ? "none" : "0 14px 34px rgba(99, 91, 255, 0.28)",
+        color:
+          props.theme === "light" && (secondary || ghost)
+            ? "#0D1117"
+            : "#FFFFFF",
         display: "inline-flex",
-        fontWeight: 800,
-        minHeight: 44,
-        padding: "0 18px",
+        fontWeight: 900,
+        minHeight: 48,
+        padding: "0 20px",
         textDecoration: "none",
       }}
     >
@@ -161,23 +194,8 @@ export function Button(
 export function IconButton(
   props: WebContext & { label: string; icon: ReactNode },
 ) {
-  const theme = getTheme(props.theme);
   return (
-    <button
-      type="button"
-      aria-label={props.label}
-      style={{
-        alignItems: "center",
-        background: theme.color.background.surface,
-        border: `1px solid ${theme.color.border.default}`,
-        borderRadius: radii.pill,
-        color: theme.color.text.primary,
-        display: "inline-flex",
-        height: 44,
-        justifyContent: "center",
-        width: 44,
-      }}
-    >
+    <button type="button" aria-label={props.label} style={styles.iconButton}>
       {props.icon}
     </button>
   );
@@ -190,13 +208,16 @@ export function Badge(
   return (
     <span
       style={{
-        border: `1px solid ${color}`,
+        alignItems: "center",
+        background: `${color}18`,
+        border: `1px solid ${color}55`,
         borderRadius: radii.pill,
         color,
         display: "inline-flex",
         fontSize: 12,
-        fontWeight: 800,
-        padding: "4px 9px",
+        fontWeight: 900,
+        minHeight: 28,
+        padding: "4px 10px",
       }}
     >
       {props.children}
@@ -226,7 +247,7 @@ export function StatCard(
   props: WebContext & { label: string; value: string; tone?: StatusTone },
 ) {
   return (
-    <Surface {...props} style={{ padding: spacing.lg }}>
+    <Surface {...props} tone="metric" style={{ padding: 18 }}>
       <Badge {...props} tone={props.tone ?? "neutral"}>
         {props.label}
       </Badge>
@@ -286,48 +307,58 @@ export function AdminShell(
 ) {
   const theme = getTheme(props.theme);
   const links = [
-    "Dashboard",
-    "Live operations",
-    "Drivers",
-    "Rides",
-    "Complaints",
-    "Payments",
-    "Pricing",
-    "Zones",
-  ];
+    ["Dashboard", "/dashboard"],
+    ["Live operations", "/live-operations"],
+    ["Drivers", "/drivers"],
+    ["Rides", "/rides"],
+    ["Complaints", "/complaints"],
+    ["Payments", "/payments"],
+    ["Pricing", "/pricing"],
+    ["Zones", "/service-zones"],
+  ] as const;
   return (
     <ThemeProviderShell {...props}>
       <div style={styles.adminGrid}>
-        <aside
-          style={{
-            background: theme.color.background.surface,
-            borderInlineEnd: `1px solid ${theme.color.border.default}`,
-            padding: spacing.xl,
-          }}
-        >
-          <BrandLockup />
-          <nav style={{ display: "grid", gap: 8, marginTop: 32 }}>
-            {links.map((link) => (
-              <a
-                key={link}
-                href={`/${link.toLowerCase().replaceAll(" ", "-")}`}
-                style={{
-                  borderRadius: radii.md,
-                  color:
-                    props.active === link
-                      ? theme.color.brand.primary
+        <aside style={styles.adminAside}>
+          <BrandLockup inverse={props.theme === "dark"} />
+          <nav style={{ display: "grid", gap: 8, marginTop: 34 }}>
+            {links.map(([label, href]) => {
+              const active = props.active === label;
+              return (
+                <a
+                  key={label}
+                  href={href}
+                  style={{
+                    background: active
+                      ? "linear-gradient(135deg, rgba(99, 91, 255, 0.22), rgba(37, 198, 218, 0.1))"
+                      : "transparent",
+                    border: `1px solid ${active ? "rgba(99, 91, 255, 0.28)" : "transparent"}`,
+                    borderRadius: 14,
+                    color: active
+                      ? theme.color.text.primary
                       : theme.color.text.secondary,
-                  fontWeight: 800,
-                  padding: "10px 12px",
-                  textDecoration: "none",
-                }}
-              >
-                {link}
-              </a>
-            ))}
+                    fontWeight: 900,
+                    padding: "12px 14px",
+                    textDecoration: "none",
+                  }}
+                >
+                  {label}
+                </a>
+              );
+            })}
           </nav>
         </aside>
-        <main style={{ minWidth: 0, padding: spacing["2xl"] }}>
+        <main style={styles.adminMain}>
+          <div style={styles.commandBar}>
+            <Badge {...props} tone="info">
+              Development operations preview
+            </Badge>
+            <span
+              style={{ color: theme.color.text.secondary, fontWeight: 800 }}
+            >
+              Cairo/Giza demo data only
+            </span>
+          </div>
           {props.children}
         </main>
       </div>
@@ -336,25 +367,15 @@ export function AdminShell(
 }
 
 export function MarketingHeader(props: WebContext) {
-  const theme = getTheme(props.theme);
   return (
-    <header
-      style={{
-        alignItems: "center",
-        borderBottom: `1px solid ${theme.color.border.default}`,
-        display: "flex",
-        gap: 16,
-        justifyContent: "space-between",
-        padding: "18px clamp(20px, 5vw, 72px)",
-      }}
-    >
-      <BrandLockup />
-      <nav style={{ display: "flex", flexWrap: "wrap", gap: 14 }}>
-        {["Ride", "Drive", "Safety", "Help"].map((link) => (
+    <header style={styles.marketingHeader}>
+      <BrandLockup inverse={props.theme === "dark"} />
+      <nav style={styles.marketingNav}>
+        {["Ride", "Drive", "Safety", "How it works", "Help"].map((link) => (
           <a
-            href={`/${link.toLowerCase()}`}
+            href={`/${link.toLowerCase().replaceAll(" ", "-")}`}
             key={link}
-            style={{ color: theme.color.text.secondary, fontWeight: 800 }}
+            style={styles.navLink}
           >
             {link}
           </a>
@@ -367,14 +388,18 @@ export function MarketingHeader(props: WebContext) {
 export function MarketingFooter(props: WebContext) {
   const theme = getTheme(props.theme);
   return (
-    <footer
-      style={{
-        borderTop: `1px solid ${theme.color.border.default}`,
-        color: theme.color.text.secondary,
-        padding: "28px clamp(20px, 5vw, 72px)",
-      }}
-    >
-      SuperNova · Cairo and Giza launch-stage prototype · No production claims.
+    <footer style={styles.footer}>
+      <BrandLockup inverse={props.theme === "dark"} compact />
+      <div style={styles.footerGrid}>
+        {["Ride", "Drive", "Safety", "Help", "About", "Legal"].map((item) => (
+          <span key={item} style={{ color: theme.color.text.secondary }}>
+            {item}
+          </span>
+        ))}
+      </div>
+      <p style={{ color: theme.color.text.secondary, margin: 0 }}>
+        Cairo and Giza launch-stage prototype. No production claims.
+      </p>
     </footer>
   );
 }
@@ -389,50 +414,235 @@ export function MarketingShell(props: WebContext & { children: ReactNode }) {
   );
 }
 
-export function MapPanel(props: WebContext & { label?: string }) {
-  const theme = getTheme(props.theme);
+export function MapPanel(
+  props: WebContext & {
+    label?: string;
+    dense?: boolean;
+    operations?: boolean;
+  },
+) {
+  const dark = props.theme === "dark";
   return (
     <div
-      aria-label={props.label ?? "Fictional prototype map"}
+      aria-label={props.label ?? "Fictional Cairo and Giza prototype map"}
       role="img"
       style={{
-        background:
-          props.theme === "dark"
-            ? "linear-gradient(135deg, #101721, #1B2430)"
-            : "linear-gradient(135deg, #EAF0F7, #F8FAFC)",
-        border: `1px solid ${theme.color.border.default}`,
-        borderRadius: radii.md,
-        minHeight: 280,
+        background: dark
+          ? "linear-gradient(135deg, #111923, #0D1117)"
+          : "linear-gradient(135deg, #E7EDF6, #F7F8FA)",
+        border: `1px solid ${dark ? "rgba(210,216,226,0.14)" : "rgba(13,17,23,0.08)"}`,
+        borderRadius: 22,
+        minHeight: props.dense ? 320 : 420,
         overflow: "hidden",
         position: "relative",
       }}
     >
-      <span style={{ ...styles.mapLine, background: theme.color.map.route }} />
-      <span
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        preserveAspectRatio="none"
+        viewBox="0 0 960 520"
         style={{
-          ...styles.mapDot,
-          background: theme.color.map.pickup,
-          left: "24%",
-          top: "62%",
+          display: "block",
+          height: "100%",
+          minHeight: "inherit",
+          width: "100%",
         }}
-      />
-      <span
-        style={{
-          ...styles.mapDot,
-          background: theme.color.map.destination,
-          left: "70%",
-          top: "32%",
-        }}
-      />
-      <span
-        style={{
-          ...styles.mapDot,
-          background: theme.color.map.driver,
-          left: "44%",
-          top: "48%",
-        }}
-      />
+      >
+        <defs>
+          <linearGradient id="route" x1="0" x2="1" y1="0" y2="1">
+            <stop stopColor="#635BFF" />
+            <stop offset="1" stopColor="#25C6DA" />
+          </linearGradient>
+          <radialGradient id="demand">
+            <stop stopColor="#7A5CFF" stopOpacity="0.42" />
+            <stop offset="1" stopColor="#7A5CFF" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+        <rect fill={dark ? "#101821" : "#E8EEF6"} height="520" width="960" />
+        <path
+          d="M0 370 C190 330 330 410 520 350 C690 298 784 356 960 302 L960 520 L0 520 Z"
+          fill={dark ? "#0F2C35" : "#D8EEF1"}
+          opacity="0.42"
+        />
+        <path
+          d="M120 90 L250 38 L380 92 L520 54 L690 108 L850 76"
+          stroke={dark ? "#273343" : "#CFD8E6"}
+          strokeWidth="22"
+          strokeLinecap="round"
+          fill="none"
+          opacity="0.78"
+        />
+        <path
+          d="M50 252 C180 170 280 300 410 214 S650 120 840 210"
+          stroke={dark ? "#354156" : "#C8D2E0"}
+          strokeWidth="18"
+          strokeLinecap="round"
+          fill="none"
+        />
+        <path
+          d="M84 430 C270 344 396 472 558 378 S750 332 924 404"
+          stroke={dark ? "#303C50" : "#D2DAE6"}
+          strokeWidth="16"
+          strokeLinecap="round"
+          fill="none"
+        />
+        {Array.from({ length: 12 }).map((_, index) => {
+          const start = 60 + index * 78;
+          const controlOne = 80 + index * 42;
+          const controlTwo = 130 + index * 30;
+          const end = 112 + index * 64;
+          return (
+            <path
+              d={`M${String(start)} 0 C${String(controlOne)} 140 ${String(controlTwo)} 290 ${String(end)} 520`}
+              fill="none"
+              key={`minor-${String(index)}`}
+              opacity="0.42"
+              stroke={dark ? "#222C3A" : "#D7DEE8"}
+              strokeLinecap="round"
+              strokeWidth="7"
+            />
+          );
+        })}
+        <path
+          d="M124 340 C248 286 330 310 440 250 S628 184 794 238"
+          stroke="url(#route)"
+          strokeWidth="10"
+          strokeLinecap="round"
+          fill="none"
+        />
+        <circle cx="260" cy="300" fill="url(#demand)" r="94" />
+        <circle cx="704" cy="240" fill="url(#demand)" r="124" />
+        <path
+          d="M590 104 L760 136 L820 276 L670 312 L540 224 Z"
+          fill="none"
+          stroke="#25C6DA"
+          strokeDasharray="8 10"
+          strokeOpacity="0.7"
+          strokeWidth="3"
+        />
+        <MarkerSvg color="#3BD489" label="P" x={124} y={340} />
+        <MarkerSvg color="#25C6DA" label="D" x={794} y={238} />
+        <MarkerSvg color="#635BFF" label="S" x={440} y={250} />
+        {props.operations
+          ? [180, 350, 612, 720, 838].map((x, index) => (
+              <circle
+                cx={x}
+                cy={index % 2 === 0 ? 180 : 382}
+                fill="#F7F8FA"
+                key={`driver-${String(index)}`}
+                r="5"
+                stroke="#635BFF"
+                strokeWidth="4"
+              />
+            ))
+          : null}
+      </svg>
     </div>
+  );
+}
+
+function MarkerSvg(props: {
+  x: number;
+  y: number;
+  color: string;
+  label: string;
+}) {
+  return (
+    <g>
+      <circle cx={props.x} cy={props.y} fill={props.color} r="18" />
+      <circle
+        cx={props.x}
+        cy={props.y}
+        fill="none"
+        r="32"
+        stroke={props.color}
+        strokeOpacity="0.28"
+        strokeWidth="5"
+      />
+      <text
+        fill="#FFFFFF"
+        fontSize="14"
+        fontWeight="900"
+        textAnchor="middle"
+        x={props.x}
+        y={props.y + 5}
+      >
+        {props.label}
+      </text>
+    </g>
+  );
+}
+
+export function AppMockup(props: WebContext & { kind: "rider" | "driver" }) {
+  const title =
+    props.kind === "rider" ? "Where are you going?" : "Online in Dokki";
+  return (
+    <div style={styles.phoneShell}>
+      <div style={styles.phoneMap}>
+        <MapPanel {...props} dense />
+      </div>
+      <div style={styles.phoneSheet}>
+        <Badge {...props} tone={props.kind === "rider" ? "info" : "success"}>
+          {props.kind === "rider" ? "Protected trip" : "Payment confirmed"}
+        </Badge>
+        <h3 style={{ fontSize: 24, margin: "14px 0 8px" }}>{title}</h3>
+        <p style={{ color: "var(--sn-theme-color-text-secondary)", margin: 0 }}>
+          {props.kind === "rider"
+            ? "Vehicle options, transparent fare, and PIN start."
+            : "Net earnings, route clarity, and low-distraction controls."}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export function VehicleSilhouette(props: { type: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 180 86"
+      style={{ height: 74, width: "100%" }}
+    >
+      <path
+        d="M34 54 C44 28 60 18 92 18 H118 C136 18 150 32 158 54"
+        fill="rgba(99,91,255,0.22)"
+        stroke="#635BFF"
+        strokeWidth="4"
+      />
+      <path
+        d="M56 50 H138"
+        stroke="#25C6DA"
+        strokeLinecap="round"
+        strokeWidth="5"
+      />
+      <circle
+        cx="58"
+        cy="60"
+        fill="#0D1117"
+        r="12"
+        stroke="#F7F8FA"
+        strokeWidth="4"
+      />
+      <circle
+        cx="136"
+        cy="60"
+        fill="#0D1117"
+        r="12"
+        stroke="#F7F8FA"
+        strokeWidth="4"
+      />
+      <text
+        fill="#D2D8E2"
+        fontSize="13"
+        fontWeight="900"
+        textAnchor="middle"
+        x="90"
+        y="42"
+      >
+        {props.type}
+      </text>
+    </svg>
   );
 }
 
@@ -440,7 +650,7 @@ export function FinancialSummary(
   props: WebContext & { amount: string; label: string },
 ) {
   return (
-    <Surface {...props}>
+    <Surface {...props} tone="finance">
       <p style={styles.eyebrow}>{props.label}</p>
       <p style={styles.statValue}>{props.amount}</p>
     </Surface>
@@ -475,11 +685,11 @@ export function ShellFrame(props: {
   children?: ReactNode;
 }) {
   return (
-    <MarketingShell locale={props.locale} theme="light">
+    <MarketingShell locale={props.locale} theme="dark">
       <main style={{ padding: "48px clamp(20px, 5vw, 72px)" }}>
         <PageHeader
           locale={props.locale}
-          theme="light"
+          theme="dark"
           eyebrow={props.eyebrow}
           title={props.title}
         />
@@ -497,23 +707,68 @@ const styles = {
   } satisfies CSSProperties,
   symbol: {
     alignItems: "center",
-    background: "#635BFF",
-    borderRadius: 12,
+    background: "linear-gradient(135deg, #635BFF, #25C6DA)",
+    border: "1px solid rgba(255, 255, 255, 0.22)",
+    borderRadius: 14,
+    boxShadow: "0 12px 36px rgba(99, 91, 255, 0.34)",
     color: "#FFFFFF",
     display: "inline-flex",
     fontSize: 20,
     fontWeight: 900,
-    height: 38,
+    height: 40,
     justifyContent: "center",
-    width: 38,
+    width: 40,
   } satisfies CSSProperties,
   adminGrid: {
     display: "grid",
-    gridTemplateColumns: "minmax(220px, 264px) minmax(0, 1fr)",
+    gridTemplateColumns: "minmax(220px, 268px) minmax(0, 1fr)",
     minHeight: "100vh",
   } satisfies CSSProperties,
-  pageHeader: {
+  adminAside: {
+    background:
+      "linear-gradient(180deg, rgba(13, 17, 23, 0.96), rgba(21, 27, 35, 0.92))",
+    borderInlineEnd: "1px solid rgba(210, 216, 226, 0.1)",
+    padding: spacing.xl,
+    position: "sticky",
+    top: 0,
+    height: "100vh",
+  } satisfies CSSProperties,
+  adminMain: {
+    minWidth: 0,
+    padding: "24px clamp(22px, 4vw, 48px) 48px",
+  } satisfies CSSProperties,
+  commandBar: {
     alignItems: "center",
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: 24,
+  } satisfies CSSProperties,
+  marketingHeader: {
+    alignItems: "center",
+    backdropFilter: "blur(18px)",
+    background: "rgba(13, 17, 23, 0.68)",
+    borderBottom: "1px solid rgba(247, 248, 250, 0.1)",
+    display: "flex",
+    gap: 16,
+    justifyContent: "space-between",
+    padding: "18px clamp(20px, 5vw, 72px)",
+    position: "sticky",
+    top: 0,
+    zIndex: 20,
+  } satisfies CSSProperties,
+  marketingNav: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 16,
+  } satisfies CSSProperties,
+  navLink: {
+    color: "#D2D8E2",
+    fontSize: 14,
+    fontWeight: 900,
+    textDecoration: "none",
+  } satisfies CSSProperties,
+  pageHeader: {
+    alignItems: "end",
     display: "flex",
     gap: 16,
     justifyContent: "space-between",
@@ -522,21 +777,24 @@ const styles = {
   eyebrow: {
     color: "var(--sn-theme-color-text-secondary)",
     fontSize: 13,
-    fontWeight: 800,
+    fontWeight: 900,
     letterSpacing: 0,
     margin: 0,
+    textTransform: "uppercase",
   } satisfies CSSProperties,
   h1: {
-    fontSize: "clamp(30px, 5vw, 54px)",
-    lineHeight: 1.05,
+    fontSize: "clamp(34px, 5vw, 64px)",
+    lineHeight: 1,
     letterSpacing: 0,
-    margin: "6px 0 0",
+    margin: "8px 0 0",
+    maxWidth: 920,
   } satisfies CSSProperties,
   statValue: {
     fontFamily: typography.family.numeric,
-    fontSize: 34,
-    fontWeight: 900,
-    margin: "12px 0 0",
+    fontSize: "clamp(28px, 4vw, 44px)",
+    fontWeight: 950,
+    letterSpacing: 0,
+    margin: "14px 0 0",
   } satisfies CSSProperties,
   th: {
     fontSize: 12,
@@ -545,20 +803,49 @@ const styles = {
     textAlign: "start",
     textTransform: "uppercase",
   } satisfies CSSProperties,
-  mapLine: {
+  iconButton: {
+    alignItems: "center",
+    background: "rgba(247, 248, 250, 0.08)",
+    border: "1px solid rgba(247, 248, 250, 0.14)",
     borderRadius: 999,
-    height: 8,
-    left: "18%",
-    position: "absolute",
-    right: "16%",
-    top: "48%",
-    transform: "rotate(-18deg)",
+    color: "#FFFFFF",
+    display: "inline-flex",
+    height: 44,
+    justifyContent: "center",
+    width: 44,
   } satisfies CSSProperties,
-  mapDot: {
-    border: "3px solid #FFFFFF",
-    borderRadius: 999,
-    height: 22,
-    position: "absolute",
-    width: 22,
+  footer: {
+    borderTop: "1px solid rgba(247, 248, 250, 0.1)",
+    display: "grid",
+    gap: 18,
+    padding: "34px clamp(20px, 5vw, 72px)",
+  } satisfies CSSProperties,
+  footerGrid: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 18,
+    fontWeight: 800,
+  } satisfies CSSProperties,
+  phoneShell: {
+    background:
+      "linear-gradient(180deg, rgba(247, 248, 250, 0.14), rgba(247, 248, 250, 0.04))",
+    border: "1px solid rgba(247, 248, 250, 0.16)",
+    borderRadius: 34,
+    boxShadow: "0 30px 90px rgba(0, 0, 0, 0.42)",
+    maxWidth: 360,
+    overflow: "hidden",
+    padding: 10,
+  } satisfies CSSProperties,
+  phoneMap: {
+    borderRadius: 26,
+    height: 300,
+    overflow: "hidden",
+  } satisfies CSSProperties,
+  phoneSheet: {
+    background: "rgba(13, 17, 23, 0.92)",
+    borderRadius: 26,
+    marginTop: -48,
+    padding: 22,
+    position: "relative",
   } satisfies CSSProperties,
 };

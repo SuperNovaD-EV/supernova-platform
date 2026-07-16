@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("admin shell renders", async ({ page }) => {
   await page.goto("/dashboard");
   await expect(
-    page.getByRole("heading", { name: "Dashboard overview" }),
+    page.getByRole("heading", { name: "Operations command center" }),
   ).toBeVisible();
 });
 
@@ -19,6 +19,6 @@ test("admin prototype routes render", async ({ page }) => {
     "/design-system",
   ]) {
     await page.goto(route);
-    await expect(page.getByText("Visual action")).toBeVisible();
+    await expect(page.getByText("Export review pack")).toBeVisible();
   }
 });

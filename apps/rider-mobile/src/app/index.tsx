@@ -8,6 +8,7 @@ import {
   Inline,
   MapCanvas,
   MoneyText,
+  NovaAtmosphere,
   PickupMarker,
   DestinationMarker,
   DriverMarker,
@@ -236,6 +237,11 @@ export default function Page() {
         </Inline>
 
         <Surface {...context} elevated>
+          {["splash", "onboarding", "searching", "payment"].includes(
+            screen.id,
+          ) ? (
+            <NovaAtmosphere {...context} compact={screen.id !== "searching"} />
+          ) : null}
           <Text {...context} role="title">
             {locale === "ar" ? translateTitle(screen.id) : screen.title}
           </Text>
@@ -307,6 +313,39 @@ function ScreenBody(props: { context: PrototypeContext; screenId: string }) {
           />
         ))}
       </>
+    );
+  }
+  if (screenId === "home" || screenId === "search") {
+    return (
+      <Surface {...context} elevated>
+        <Text {...context} role="section">
+          {context.locale === "ar"
+            ? "إلى أين تريد الذهاب؟"
+            : "Where are you going?"}
+        </Text>
+        <Text {...context} muted>
+          Home · Work · Recent destination · protected trip access
+        </Text>
+        <Inline style={{ flexWrap: "wrap" }}>
+          {["Home", "Work", "Zamalek"].map((item) => (
+            <StatusPill {...context} key={item} label={item} variant="info" />
+          ))}
+        </Inline>
+      </Surface>
+    );
+  }
+  if (screenId === "searching") {
+    return (
+      <Surface {...context} elevated>
+        <NovaAtmosphere {...context} />
+        <Text {...context} role="section">
+          Matching with verified nearby drivers
+        </Text>
+        <Text {...context} muted>
+          Checking payment confirmation, vehicle eligibility, and pickup ETA.
+        </Text>
+        <StatusPill {...context} label="Search progress 62%" variant="info" />
+      </Surface>
     );
   }
   if (screenId === "fare" || screenId === "payment") {

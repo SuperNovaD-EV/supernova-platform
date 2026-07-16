@@ -10,6 +10,17 @@ import {
   type TextStyle,
   type ViewStyle,
 } from "react-native";
+import Svg, {
+  Circle,
+  Defs,
+  Ellipse,
+  G,
+  LinearGradient,
+  Path,
+  Rect,
+  Stop,
+  Text as SvgText,
+} from "react-native-svg";
 import {
   createReactNativeTheme,
   type SemanticTheme,
@@ -102,6 +113,13 @@ export function Surface(
             ? theme.semantic.color.background.elevated
             : theme.semantic.color.background.surface,
           borderColor: theme.semantic.color.border.default,
+          shadowColor:
+            props.theme === "dark"
+              ? "#000000"
+              : theme.semantic.color.brand.primary,
+          shadowOpacity: props.elevated ? 0.22 : 0.08,
+          shadowRadius: props.elevated ? 22 : 10,
+          shadowOffset: { height: props.elevated ? 14 : 6, width: 0 },
         },
         props.style,
       ]}
@@ -175,6 +193,7 @@ export function Button(
           backgroundColor: props.disabled
             ? theme.semantic.color.border.default
             : color,
+          borderColor: "rgba(255,255,255,0.18)",
           opacity: pressed ? 0.86 : 1,
         },
       ]}
@@ -293,7 +312,12 @@ export function StatusPill(
   const { theme } = getRuntime(props);
   const color = statusColor(theme.semantic, props.variant ?? "default");
   return (
-    <View style={[styles.pill, { borderColor: color }]}>
+    <View
+      style={[
+        styles.pill,
+        { backgroundColor: `${color}22`, borderColor: color },
+      ]}
+    >
       <NativeText style={{ color, fontWeight: "800" }}>
         {props.label}
       </NativeText>
@@ -365,41 +389,153 @@ export function StepIndicator(
 
 export function MapCanvas(props: PrototypeContext & { children?: ReactNode }) {
   const { theme } = getRuntime(props);
+  const dark = props.theme === "dark";
   return (
     <View
       accessibilityLabel="Fictional Cairo and Giza prototype map"
       style={[
         styles.map,
         {
-          backgroundColor:
-            props.theme === "dark"
-              ? theme.semantic.color.background.inset
-              : "#EAF0F7",
+          backgroundColor: dark
+            ? theme.semantic.color.background.inset
+            : "#EAF0F7",
         },
       ]}
     >
-      <View
-        style={[
-          styles.mapRoad,
-          { backgroundColor: theme.semantic.color.border.default },
-        ]}
-      />
-      <View
-        style={[
-          styles.route,
-          {
-            backgroundColor: theme.semantic.color.map.route,
-            transform: [
-              {
-                rotate:
-                  getDirection(props.locale) === "rtl" ? "-18deg" : "18deg",
-              },
-            ],
-          },
-        ]}
-      />
-      {props.children}
+      <Svg
+        height="100%"
+        preserveAspectRatio="none"
+        viewBox="0 0 390 260"
+        width="100%"
+      >
+        <Defs>
+          <LinearGradient id="snRouteMobile" x1="0" x2="1" y1="0" y2="1">
+            <Stop stopColor={theme.semantic.color.brand.primary} />
+            <Stop offset="1" stopColor={theme.semantic.color.brand.accent} />
+          </LinearGradient>
+        </Defs>
+        <Rect fill={dark ? "#0B1118" : "#E7EDF6"} height="260" width="390" />
+        <Path
+          d="M0 196 C80 160 128 226 210 184 C286 146 318 170 390 138 L390 260 L0 260 Z"
+          fill={dark ? "#0E3038" : "#D9EEF2"}
+          opacity={0.46}
+        />
+        <Path
+          d="M-20 62 C48 28 92 86 154 56 S276 38 420 82"
+          fill="none"
+          opacity={0.74}
+          stroke={dark ? "#273343" : "#C9D3E0"}
+          strokeLinecap="round"
+          strokeWidth={15}
+        />
+        <Path
+          d="M18 142 C96 92 146 170 218 124 S312 80 386 128"
+          fill="none"
+          stroke={dark ? "#344055" : "#CDD7E4"}
+          strokeLinecap="round"
+          strokeWidth={12}
+        />
+        <Path
+          d="M42 212 C126 168 174 228 246 182 S326 154 398 198"
+          fill="none"
+          opacity={0.86}
+          stroke={dark ? "#2A3547" : "#D5DDE8"}
+          strokeLinecap="round"
+          strokeWidth={10}
+        />
+        {Array.from({ length: 8 }).map((_, index) => {
+          const start = 24 + index * 46;
+          const controlOne = 38 + index * 22;
+          const controlTwo = 68 + index * 12;
+          const end = 54 + index * 38;
+          return (
+            <Path
+              d={`M${String(start)} 0 C${String(controlOne)} 76 ${String(controlTwo)} 148 ${String(end)} 260`}
+              fill="none"
+              key={`minor-${String(index)}`}
+              opacity={0.42}
+              stroke={dark ? "#202A38" : "#D9E0EA"}
+              strokeLinecap="round"
+              strokeWidth={4}
+            />
+          );
+        })}
+        <Circle
+          cx="112"
+          cy="154"
+          fill={theme.semantic.color.brand.primary}
+          opacity={0.16}
+          r="58"
+        />
+        <Circle
+          cx="284"
+          cy="126"
+          fill={theme.semantic.color.brand.accent}
+          opacity={0.14}
+          r="68"
+        />
+        <Path
+          d="M58 176 C126 138 176 152 226 118 S292 90 342 118"
+          fill="none"
+          stroke="url(#snRouteMobile)"
+          strokeLinecap="round"
+          strokeWidth={7}
+        />
+        <MapMarker
+          color={theme.semantic.color.status.success}
+          label="P"
+          x={58}
+          y={176}
+        />
+        <MapMarker
+          color={theme.semantic.color.brand.accent}
+          label="D"
+          x={342}
+          y={118}
+        />
+        <MapMarker
+          color={theme.semantic.color.brand.primary}
+          label="S"
+          x={226}
+          y={118}
+        />
+      </Svg>
+      <View style={styles.mapChrome}>
+        <StatusPill {...props} label="Protected map preview" variant="info" />
+      </View>
     </View>
+  );
+}
+
+function MapMarker(props: {
+  x: number;
+  y: number;
+  color: string;
+  label: string;
+}) {
+  const labelTransform = `translate(${String(props.x)} ${String(props.y + 4)})`;
+  return (
+    <G>
+      <Circle cx={props.x} cy={props.y} fill={props.color} r="13" />
+      <Circle
+        cx={props.x}
+        cy={props.y}
+        fill="none"
+        opacity={0.3}
+        r="24"
+        stroke={props.color}
+        strokeWidth={4}
+      />
+      <SvgText
+        fill="#FFFFFF"
+        fontSize="10"
+        fontWeight="900"
+        textAnchor="middle"
+        transform={labelTransform}
+      >
+        {props.label}
+      </SvgText>
+    </G>
   );
 }
 
@@ -453,11 +589,15 @@ export function VehicleOptionCard(
             ? theme.semantic.color.brand.primary
             : theme.semantic.color.border.default,
           backgroundColor: theme.semantic.color.background.surface,
+          shadowColor: theme.semantic.color.brand.primary,
+          shadowOpacity: props.selected ? 0.24 : 0.08,
+          shadowRadius: props.selected ? 18 : 8,
+          shadowOffset: { height: props.selected ? 10 : 4, width: 0 },
         },
       ]}
     >
       <Inline>
-        <View style={styles.vehicleGlyph} />
+        <VehicleGlyph {...props} label={props.title} />
         <View style={{ flex: 1 }}>
           <Text {...props} role="body">
             {props.title}
@@ -469,6 +609,127 @@ export function VehicleOptionCard(
         <MoneyText {...props} minorUnits={props.fareMinor} />
       </Inline>
     </Pressable>
+  );
+}
+
+export function VehicleGlyph(props: PrototypeContext & { label: string }) {
+  const { theme } = getRuntime(props);
+  return (
+    <View style={styles.vehicleGlyph}>
+      <Svg height="42" viewBox="0 0 80 42" width="80">
+        <Path
+          d="M12 28 C18 12 28 8 43 8 H52 C64 8 70 16 74 28"
+          fill={`${theme.semantic.color.brand.primary}33`}
+          stroke={theme.semantic.color.brand.primary}
+          strokeWidth={3}
+        />
+        <Path
+          d="M24 25 H64"
+          stroke={theme.semantic.color.brand.accent}
+          strokeLinecap="round"
+          strokeWidth={3}
+        />
+        <Circle
+          cx="25"
+          cy="31"
+          fill="#0D1117"
+          r="6"
+          stroke="#F7F8FA"
+          strokeWidth={2}
+        />
+        <Circle
+          cx="62"
+          cy="31"
+          fill="#0D1117"
+          r="6"
+          stroke="#F7F8FA"
+          strokeWidth={2}
+        />
+      </Svg>
+    </View>
+  );
+}
+
+export function NovaAtmosphere(
+  props: PrototypeContext & { compact?: boolean },
+) {
+  const { theme } = getRuntime(props);
+  const size = props.compact ? 180 : 280;
+  return (
+    <View
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
+      style={[styles.atmosphere, { height: size }]}
+    >
+      <Svg height="100%" viewBox="0 0 320 280" width="100%">
+        <Defs>
+          <LinearGradient id="snAtmosphere" x1="0" x2="1" y1="0" y2="1">
+            <Stop
+              stopColor={theme.semantic.color.brand.primary}
+              stopOpacity="0.86"
+            />
+            <Stop
+              offset="1"
+              stopColor={theme.semantic.color.brand.accent}
+              stopOpacity="0.74"
+            />
+          </LinearGradient>
+        </Defs>
+        <Ellipse
+          cx="160"
+          cy="142"
+          fill="none"
+          opacity={0.36}
+          rx="118"
+          ry="44"
+          stroke="url(#snAtmosphere)"
+          strokeWidth={2}
+        />
+        <Ellipse
+          cx="160"
+          cy="142"
+          fill="none"
+          opacity={0.24}
+          rx="82"
+          ry="126"
+          stroke={theme.semantic.color.brand.primary}
+          strokeWidth={2}
+        />
+        <Circle
+          cx="160"
+          cy="142"
+          fill="url(#snAtmosphere)"
+          opacity={0.92}
+          r="46"
+        />
+        <Circle
+          cx="160"
+          cy="142"
+          fill={theme.semantic.color.background.canvas}
+          opacity={0.58}
+          r="22"
+        />
+        {[
+          [72, 86],
+          [248, 76],
+          [62, 190],
+          [254, 214],
+          [154, 40],
+          [198, 234],
+        ].map(([cx, cy], index) => (
+          <Circle
+            cx={cx}
+            cy={cy}
+            fill={
+              index % 2 === 0 ? theme.semantic.color.brand.accent : "#F7F8FA"
+            }
+            key={`star-${String(index)}`}
+            opacity={0.72}
+            r={index % 2 === 0 ? 3 : 2}
+          />
+        ))}
+      </Svg>
+    </View>
   );
 }
 
@@ -670,19 +931,19 @@ const styles = StyleSheet.create({
     flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
   },
   surface: {
-    borderRadius: 14,
+    borderRadius: 22,
     borderWidth: 1,
     gap: 10,
-    padding: 16,
+    padding: 18,
   },
   title: {
-    fontSize: 32,
-    fontWeight: "800",
-    lineHeight: 39,
+    fontSize: 38,
+    fontWeight: "900",
+    lineHeight: 42,
   },
   sectionTitle: {
-    fontSize: 22,
-    fontWeight: "800",
+    fontSize: 24,
+    fontWeight: "900",
     lineHeight: 28,
   },
   body: {
@@ -702,10 +963,11 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    borderRadius: 12,
+    borderRadius: 999,
+    borderWidth: 1,
     justifyContent: "center",
-    minHeight: 48,
-    paddingHorizontal: 18,
+    minHeight: 54,
+    paddingHorizontal: 22,
   },
   buttonText: {
     color: "#FFFFFF",
@@ -720,14 +982,14 @@ const styles = StyleSheet.create({
     minWidth: 44,
   },
   segmented: {
-    borderRadius: 12,
+    borderRadius: 999,
     flexDirection: "row",
     gap: 4,
     padding: 4,
   },
   segment: {
     alignItems: "center",
-    borderRadius: 10,
+    borderRadius: 999,
     flex: 1,
     minHeight: 40,
     justifyContent: "center",
@@ -749,27 +1011,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#CDD4E0",
   },
   map: {
-    borderRadius: 18,
-    height: 240,
+    borderRadius: 28,
+    height: 320,
     overflow: "hidden",
-    padding: 20,
-  },
-  mapRoad: {
-    borderRadius: 999,
-    height: 8,
-    left: 28,
-    opacity: 0.8,
-    position: "absolute",
-    right: 28,
-    top: 74,
-  },
-  route: {
-    borderRadius: 999,
-    height: 8,
-    left: 42,
-    position: "absolute",
-    right: 42,
-    top: 132,
+    position: "relative",
   },
   marker: {
     alignItems: "center",
@@ -784,20 +1029,33 @@ const styles = StyleSheet.create({
     fontWeight: "900",
   },
   vehicleCard: {
-    borderRadius: 14,
+    borderRadius: 22,
     borderWidth: 1,
-    padding: 14,
+    padding: 16,
   },
   vehicleGlyph: {
-    backgroundColor: "#635BFF",
-    borderRadius: 10,
-    height: 34,
-    width: 54,
+    alignItems: "center",
+    backgroundColor: "rgba(99, 91, 255, 0.12)",
+    borderRadius: 18,
+    height: 52,
+    justifyContent: "center",
+    width: 86,
   },
   fieldText: {
     borderBottomWidth: 1,
     fontSize: 16,
     fontWeight: "700",
     paddingVertical: 8,
+  },
+  mapChrome: {
+    left: 16,
+    position: "absolute",
+    top: 16,
+  },
+  atmosphere: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 4,
+    overflow: "hidden",
   },
 });

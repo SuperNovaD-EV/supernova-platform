@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "@supernova/design-tokens": "workspace:*",
-    "@supernova/localization": "workspace:*"
+    "@supernova/localization": "workspace:*",
+    "react-native-svg": "15.15.4"
   },
   "devDependencies": {
     "react": "19.2.3",
