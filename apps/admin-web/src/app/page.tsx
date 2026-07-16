@@ -1,15 +1,5 @@
-import { ChartPreview } from "./chart-preview";
-import { t } from "@supernova/localization";
-import { ShellFrame } from "@supernova/ui-web";
+import { AdminPrototypePage } from "./prototype";
 
 export default function Page() {
-  return (
-    <ShellFrame
-      locale="en"
-      eyebrow="Development-only chart sample"
-      title={t("en", "adminShell")}
-    >
-      <ChartPreview />
-    </ShellFrame>
-  );
+  return <AdminPrototypePage routeKey="dashboard" />;
 }

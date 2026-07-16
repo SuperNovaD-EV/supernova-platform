@@ -8,10 +8,12 @@ Remote provisioning instructions live in `docs/operations/remote-provisioning.md
 
 Phase 1 product and domain architecture starts with `docs/product/product-requirements.md`, `docs/product/mvp-scope.md`, `docs/architecture/domain-boundaries.md`, `docs/architecture/domain-model.md`, and `docs/architecture/state-machines.md`.
 
+Phase 2 UX and design-system documentation starts with `docs/ux/information-architecture.md`, `docs/ux/screen-inventory.md`, `docs/design-system/overview.md`, and `docs/ux/prototype-review-checklist.md`.
+
 ## Commands
 
 - `pnpm validate` runs the local quality gate.
 - `pnpm dev:rider`, `pnpm dev:driver`, `pnpm dev:admin`, `pnpm dev:marketing` start shells.
 - `pnpm supabase:start`, `pnpm supabase:reset`, `pnpm supabase:lint`, `pnpm supabase:test`, `pnpm supabase:types` manage local Supabase.
 
-Phase 1 remains documentation-only: no auth, maps, trips, payments, dashboards, domain migrations, or product features are implemented.
+Phase 2 prototypes are static and local-state only: no auth, maps APIs, Supabase calls, payments, dispatch, notifications, domain migrations, or production data are implemented.

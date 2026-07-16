@@ -1,12 +1,5 @@
-import { t } from "@supernova/localization";
-import { ShellFrame } from "@supernova/ui-web";
+import { MarketingPrototypePage } from "./prototype";
 
 export default function Page() {
-  return (
-    <ShellFrame
-      locale="ar"
-      eyebrow={t("ar", "direction")}
-      title={t("ar", "marketingShell")}
-    />
-  );
+  return <MarketingPrototypePage pageKey="home" />;
 }

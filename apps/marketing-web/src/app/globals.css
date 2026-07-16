@@ -4,3 +4,18 @@ html,
 body {
   margin: 0;
 }
+
+@media (max-width: 860px) {
+  .sn-marketing-hero-grid,
+  .sn-marketing-split {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .sn-marketing-mockups {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .sn-marketing-mockups > div {
+    transform: none !important;
+  }
+}

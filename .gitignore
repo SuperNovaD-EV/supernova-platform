@@ -7,6 +7,7 @@ build/
 coverage/
 test-results/
 playwright-report/
+artifacts/phase-2-visual-review/
 .env
 .env.*
 !.env.example
