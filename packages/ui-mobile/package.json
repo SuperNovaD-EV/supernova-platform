@@ -1,0 +1,24 @@
+{
+  "name": "@supernova/ui-mobile",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.tsx"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "peerDependencies": {
+    "react": ">=19",
+    "react-native": ">=0.86"
+  },
+  "dependencies": {
+    "@supernova/design-tokens": "workspace:*",
+    "@supernova/localization": "workspace:*"
+  },
+  "devDependencies": {}
+}

@@ -1,0 +1,26 @@
+name: supabase
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: ".nvmrc"
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm supabase:start
+      - run: pnpm supabase:reset
+      - run: pnpm supabase:lint
+      - run: pnpm supabase:test
+      - run: pnpm supabase:types
+      - run: git diff --exit-code packages/types/src/generated/database.types.ts

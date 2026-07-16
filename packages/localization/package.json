@@ -1,0 +1,19 @@
+{
+  "name": "@supernova/localization",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "dependencies": {
+    "date-fns": "4.4.0",
+    "i18next": "26.3.6"
+  }
+}

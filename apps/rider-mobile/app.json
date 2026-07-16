@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "SuperNova Rider",
+    "slug": "supernova-rider",
+    "scheme": "supernova-rider",
+    "orientation": "portrait",
+    "plugins": ["expo-router"],
+    "ios": { "bundleIdentifier": "com.example.supernova.rider" },
+    "android": { "package": "com.example.supernova.rider" },
+    "extra": { "router": { "origin": false } }
+  }
+}

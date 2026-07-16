@@ -1,0 +1,3 @@
+test-results/
+playwright-report/
+packages/types/src/generated/database.types.ts

@@ -1,0 +1,52 @@
+{
+  "name": "supernova-platform",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@11.13.1",
+  "scripts": {
+    "dev:rider": "pnpm --filter @supernova/rider-mobile start",
+    "dev:driver": "pnpm --filter @supernova/driver-mobile start",
+    "dev:admin": "pnpm --filter @supernova/admin-web dev",
+    "dev:marketing": "pnpm --filter @supernova/marketing-web dev",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "build": "turbo build",
+    "validate": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:reset": "supabase db reset",
+    "supabase:lint": "supabase db lint",
+    "supabase:test": "supabase test db",
+    "supabase:types": "supabase gen types typescript --local --schema public,app_private > packages/types/src/generated/database.types.ts",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,md,css}": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "21.2.1",
+    "@commitlint/config-conventional": "21.2.0",
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.61.1",
+    "@types/node": "26.1.1",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "eslint": "10.7.0",
+    "husky": "9.1.7",
+    "jsdom": "29.1.1",
+    "lint-staged": "17.0.8",
+    "pnpm": "11.13.1",
+    "prettier": "3.9.5",
+    "prettier-plugin-tailwindcss": "0.8.0",
+    "supabase": "2.109.1",
+    "turbo": "2.10.5",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.64.0",
+    "vitest": "4.1.10"
+  }
+}

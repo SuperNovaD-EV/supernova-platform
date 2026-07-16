@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "SuperNova Driver",
+    "slug": "supernova-driver",
+    "scheme": "supernova-driver",
+    "orientation": "portrait",
+    "plugins": ["expo-router"],
+    "ios": { "bundleIdentifier": "com.example.supernova.driver" },
+    "android": { "package": "com.example.supernova.driver" },
+    "extra": { "router": { "origin": false } }
+  }
+}
